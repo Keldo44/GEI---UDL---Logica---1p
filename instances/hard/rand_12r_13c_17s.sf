@@ -1,0 +1,13 @@
+rows 6 4 4 1 7 4 6 2 2 4 3 3
+columns 7 3 4 5 3 2 0 7 2 2 4 0 7
+ships 1 4 5 3 2 3 5 3 4 4 2 3 1 2 2 1 1
+water 11 7
+water 1 1
+piece 0 4
+water 1 2
+water 3 5
+piece 2 0
+piece 10 7
+water 6 1
+water 7 6
+piece 11 0
