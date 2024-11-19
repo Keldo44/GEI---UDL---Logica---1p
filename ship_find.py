@@ -40,9 +40,9 @@ def encode(sf):
                     lits.append(ship(init_row, init_column, ship_index, ship_dir))
         # YOUR CODE HERE
         cnf.add_clauses(at_least_one(lits))
+
     # Ships can not have same starting position
     # YOUR CODE HERE 
-
     for init_row in range(nrows):
         for init_column in range(ncolumns):
             # Collect all possible literals for ships starting in this position
@@ -51,16 +51,14 @@ def encode(sf):
                 for ship_dir in ["E", "S"]:
                     lits.append(ship(init_row, init_column, ship_index, ship_dir))
             # Add a pairwise "at most one" constraint
-            for i in range(len(lits)):
-                for j in range(i + 1, len(lits)):
-                    cnf.add_clause([~lits[i], ~lits[j]])
-
+            cnf.add_clauses(at_most_one(lits))
 
     # Ship constraints
     for ship_index, ship_size in enumerate(sf.ships):
         for init_row in range(nrows):
             for init_column in range(ncolumns):
                 for ship_dir in ["E", "S"]:
+
                     if ship_dir == "S":
                         # dissallowed starting positions
                         if nrows - init_row < ship_size or sf.columns[init_column] < ship_size:
@@ -76,17 +74,15 @@ def encode(sf):
                                     continue
                                 if row >= init_row and row < (init_row + ship_size) and col == init_column:
                                     # ship
-                                    # YOUR CODE HERE
-                                    cnf.add_clause([ship(row, col, ship_index, ship_dir)])
+                                    """ YOUR CODE HERE"""
                                 else:
                                     # water
-                                    # YOUR CODE HERE
-                                    cnf.add_clause([~ship(row, col, ship_index, ship_dir)])
+                                    """ YOUR CODE HERE"""
 
                     else:
                         # ship_dir is 'E'
 
-                        # submarine only have direction S
+                         # submarine only have direction S
                         if ship_size == 1:
                             # YOUR CODE HERE
                             cnf.add_clause([~ship(init_row, init_column, ship_index, ship_dir)])    
@@ -94,7 +90,6 @@ def encode(sf):
 
                         # dissallowed starting positions
                         if ncolumns - init_column < ship_size or sf.rows[init_row] < ship_size:
-                            # YOUR CODE HERE
                             cnf.add_clause([~ship(init_row, init_column, ship_index, ship_dir)])
                             continue
 
@@ -106,26 +101,24 @@ def encode(sf):
                                     continue
                                 if col >= init_column and col < (init_column + ship_size) and row == init_row:
                                     # ship
-                                    # YOUR CODE HERE
-                                    cnf.add_clause([ship(row, col, ship_index, ship_dir)])
+                                    """ YOUR CODE HERE"""
                                 else:
                                     # water
-                                    # YOUR CODE HERE
-                                    cnf.add_clause([~ship(row, col, ship_index, ship_dir)])
+                                    """ YOUR CODE HERE"""
     
     # Row constraints
     for row_index, n_parts in enumerate(sf.rows):
         if n_parts == 0:
             for column_index in range(ncolumns):
                 # YOUR CODE HERE
-                cnf.add_clause([~ship(row_index, column_index, ship_index, ship_dir)])
+                cnf.add_clause([~cell(row_index, column_index)])
         else:
             lits = []
             for comb in itertools.combinations(range(ncolumns), n_parts):
                 cube = [cell(row_index, column_index) for column_index in comb]
                 aux_var = reify_cube(cube, cnf)
                 lits.append(aux_var)
-
+            
             # YOUR CODE HERE
             cnf.add_clauses(at_least_one(lits))
 
@@ -134,11 +127,11 @@ def encode(sf):
     for column_index, n_parts in enumerate(sf.columns):
         if n_parts == 0:
             for row_index in range(nrows):
-                cnf.add_clause([~ship(column_index, row_index, ship_index, ship_dir)])
+                cnf.add_clause([~cell(row_index, column_index)])
         else:
             lits = []
             for comb in itertools.combinations(range(nrows), n_parts):
-                cube = [cell(column_index, row_index) for row_index in comb]
+                cube = [cell(row_index, column_index) for row_index in comb]
                 aux_var = reify_cube(cube, cnf)
                 lits.append(aux_var)
 
