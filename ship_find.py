@@ -74,10 +74,11 @@ def encode(sf):
                                     continue
                                 if row >= init_row and row < (init_row + ship_size) and col == init_column:
                                     # ship
-                                    """ YOUR CODE HERE"""
+                                    cnf.add_clause([~ship(init_row, init_column, ship_index, ship_dir), cell(row, col)])
+                                    
                                 else:
                                     # water
-                                    """ YOUR CODE HERE"""
+                                    cnf.add_clause([~ship(init_row, init_column, ship_index, ship_dir), ~cell(row, col)])
 
                     else:
                         # ship_dir is 'E'
@@ -102,9 +103,11 @@ def encode(sf):
                                 if col >= init_column and col < (init_column + ship_size) and row == init_row:
                                     # ship
                                     """ YOUR CODE HERE"""
+                                    cnf.add_clause([~ship(init_row, init_column, ship_index, ship_dir), cell(row, col)])
                                 else:
                                     # water
                                     """ YOUR CODE HERE"""
+                                    cnf.add_clause([~ship(init_row, init_column, ship_index, ship_dir), ~cell(row, col)])
     
     # Row constraints
     for row_index, n_parts in enumerate(sf.rows):
