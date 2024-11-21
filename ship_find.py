@@ -123,7 +123,7 @@ def encode(sf):
                 lits.append(aux_var)
             
             # YOUR CODE HERE
-            cnf.add_clauses(at_least_one(lits))
+            cnf.add_clauses(exactly_one(lits))
 
     # Column constraints
     # YOUR CODE HERE
@@ -138,7 +138,7 @@ def encode(sf):
                 aux_var = reify_cube(cube, cnf)
                 lits.append(aux_var)
 
-            cnf.add_clauses(at_least_one(lits))
+            cnf.add_clauses(exactly_one(lits))
  
     return cnf
 
